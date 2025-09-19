@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Lost & Found Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1E88E5;
+            --teal: #26A69A;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --text-dark: #2C3E50;
+            --text-light: #6B7280;
+            --shadow-soft: 0 4px 20px rgba(30, 136, 229, 0.1);
+            --shadow-hover: 0 8px 30px rgba(30, 136, 229, 0.15);
+            --gradient-primary: linear-gradient(135deg, #1E88E5, #26A69A);
+            --gradient-card: linear-gradient(145deg, #FFFFFF, #F8FAFC);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F8FAFC 0%, #E3F2FD 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-soft);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .highlights-section {
+            padding: 4rem 2rem;
+            background: var(--white);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            font-size: 1.125rem;
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .highlight-card {
+            background: var(--gradient-card);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .highlight-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: var(--gradient-primary);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .highlight-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .highlight-description {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .search-filters {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            background: var(--white);
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .item-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--light-gray);
+        }
+
+        .item-content {
+            padding: 1.5rem;
+        }
+
+        .item-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .item-description {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .item-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .meta-icon {
+            color: var(--teal);
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-hover);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .login-subtitle {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            color: var(--teal);
+            text-decoration: none;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .admin-sidebar {
+            position: fixed;
+            left: 0;
+            top: 80px;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: var(--white);
+            box-shadow: var(--shadow-soft);
+            padding: 2rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background: linear-gradient(90deg, rgba(30, 136, 229, 0.1), transparent);
+            color: var(--primary-blue);
+        }
+
+        .admin-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .chatbot-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-hover);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .chatbot-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                box-shadow: var(--shadow-soft);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+
+            .admin-content {
+                margin-left: 0;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <span>Lost & Found</span>
+            </div>
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#lost-items" class="nav-link" data-page="lost-items">Lost Items</a></li>
+                    <li><a href="#history" class="nav-link" data-page="history">History</a></li>
+                    <li><a href="#archive" class="nav-link" data-page="archive">Archive</a></li>
+                    <li><a href="#about" class="nav-link" data-page="about">About</a></li>
+                    <li><a href="#admin-login" class="nav-link" data-page="admin-login">Admin</a></li>
+                </ul>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <section class="hero-section">
+                <h1 class="hero-title">Find or Report Lost Items Easily</h1>
+                <p class="hero-subtitle">Our college lost and found system helps you quickly locate misplaced items or report items you've found around campus.</p>
+                <div class="hero-buttons">
+                    <a href="#lost-items" class="btn btn-primary" data-page="lost-items">
+                        <i class="fas fa-search"></i>
+                        View Lost Items
+                    </a>
+                    <a href="#" class="btn btn-secondary" data-page="admin-login">
+                        <i class="fas fa-plus"></i>
+                        Report Found Item
+                    </a>
+                </div>
+            </section>
+
+            <section class="highlights-section">
+                <div class="section-container">
+                    <h2 class="section-title">Common Lost Items</h2>
+                    <p class="section-subtitle">These are the most frequently lost items on campus</p>
+                    <div class="highlights-grid">
+                        <div class="highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3 class="highlight-title">Mobile Phones</h3>
+                            <p class="highlight-description">Lost phones are commonly found in classrooms, cafeteria, and library study areas.</p>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h3 class="highlight-title">Keys & Cards</h3>
+                            <p class="highlight-description">ID cards, room keys, and access cards frequently left in computer labs and dining areas.</p>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-icon">
+                                <i class="fas fa-backpack"></i>
+                            </div>
+                            <h3 class="highlight-title">Bags & Accessories</h3>
+                            <p class="highlight-description">Backpacks, wallets, and personal accessories found throughout campus facilities.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Lost Items Page -->
+        <div id="lost-items-page" class="page hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h1 class="page-title">Lost Items</h1>
+                    <p>Browse through items found around campus</p>
+                </div>
+
+                <div class="search-filters">
+                    <div class="search-bar">
+                        <input type="text" class="search-input" placeholder="Search for items..." id="searchInput">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                            Search
+                        </button>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label class="filter-label">Category</label>
+                            <select class="filter-select" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="documents">Documents</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Location</label>
+                            <select class="filter-select" id="locationFilter">
+                                <option value="">All Locations</option>
+                                <option value="library">Library</option>
+                                <option value="cafeteria">Cafeteria</option>
+                                <option value="classroom">Classroom</option>
+                                <option value="lab">Computer Lab</option>
+                                <option value="gym">Gymnasium</option>
+                                <option value="parking">Parking Lot</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Sort By</label>
+                            <select class="filter-select" id="sortFilter">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="items-grid" id="itemsGrid">
+                    <!-- Sample items will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- History Page -->
+        <div id="history-page" class="page hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h1 class="page-title">Collection History</h1>
+                    <p>Items that have been successfully collected by their owners</p>
+                </div>
+                <div class="items-grid" id="historyGrid">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Archive Page -->
+        <div id="archive-page" class="page hidden">
+            <div class="page-container">
+                <div class="page-header">
+                    <h1 class="page-title">Archive</h1>
+                    <p>Items older than 30 days are automatically archived</p>
+                </div>
+                <div class="items-grid" id="archiveGrid">
+                    <!-- Archive items will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Login Page -->
+        <div id="admin-login-page" class="page hidden">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="login-logo">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2 class="login-title">Admin Login</h2>
+                    <p class="login-subtitle">Teachers and staff only</p>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label class="form-label" for="username">Username</label>
+                            <input type="text" class="form-input" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" class="form-input" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard (Hidden by default) -->
+        <div id="admin-dashboard" class="page hidden">
+            <nav class="admin-sidebar">
+                <ul class="sidebar-menu">
+                    <li class="sidebar-item">
+                        <a href="#admin-add" class="sidebar-link active" data-admin-page="add">
+                            <i class="fas fa-plus"></i>
+                            <span>Add Lost Item</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#admin-manage" class="sidebar-link" data-admin-page="manage">
+                            <i class="fas fa-list"></i>
+                            <span>Manage Items</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#admin-stats" class="sidebar-link" data-admin-page="stats">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Statistics</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#home" class="sidebar-link" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="admin-content">
+                <!-- Admin content will be loaded here -->
+                <div id="admin-content-area">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome to the Lost & Found Admin Panel</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Chatbot Button -->
+    <button class="chatbot-btn" id="chatbotBtn" title="AI Assistant">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <script>
+        // Sample data with real images
+        const sampleItems = [
+            {
+                id: 1,
+                name: "iPhone 13 Pro",
+                description: "Black iPhone with cracked screen protector, found in blue case",
+                foundLocation: "Library Study Room 3",
+                collectLocation: "Security Office",
+                uploadDate: "2024-09-15",
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 2,
+                name: "Red Backpack",
+                description: "Nike red backpack with laptop compartment, contains notebooks",
+                foundLocation: "Cafeteria",
+                collectLocation: "Lost & Found Office",
+                uploadDate: "2024-09-14",
+                category: "accessories",
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 3,
+                name: "Student ID Card",
+                description: "ID card for John Smith, Computer Science Department",
+                foundLocation: "Computer Lab B",
+                collectLocation: "Registrar's Office",
+                uploadDate: "2024-09-13",
+                category: "documents",
+                image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=300&h=200&fit=crop&crop=center",
+                status: "collected"
+            },
+            {
+                id: 4,
+                name: "Wireless Earbuds",
+                description: "Apple AirPods in white charging case",
+                foundLocation: "Gymnasium",
+                collectLocation: "Security Office",
+                uploadDate: "2024-08-10",
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&h=200&fit=crop&crop=center",
+                status: "archived"
+            },
+            {
+                id: 5,
+                name: "Blue Water Bottle",
+                description: "Stainless steel water bottle with university logo sticker",
+                foundLocation: "Parking Lot A",
+                collectLocation: "Security Office",
+                uploadDate: "2024-09-12",
+                category: "accessories",
+                image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 6,
+                name: "Black Leather Wallet",
+                description: "Men's black leather wallet with credit cards inside",
+                foundLocation: "Classroom 205",
+                collectLocation: "Lost & Found Office",
+                uploadDate: "2024-09-11",
+                category: "accessories",
+                image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 7,
+                name: "MacBook Pro 13\"",
+                description: "Silver MacBook Pro with programming stickers",
+                foundLocation: "Computer Lab C",
+                collectLocation: "IT Department",
+                uploadDate: "2024-09-10",
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 8,
+                name: "Pink Hoodie",
+                description: "Medium size pink hoodie with university logo",
+                foundLocation: "Gymnasium Locker Room",
+                collectLocation: "Lost & Found Office",
+                uploadDate: "2024-09-09",
+                category: "clothing",
+                image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&h=200&fit=crop&crop=center",
+                status: "collected"
+            },
+            {
+                id: 9,
+                name: "Calculator",
+                description: "Texas Instruments scientific calculator with name written on back",
+                foundLocation: "Math Building Room 101",
+                collectLocation: "Math Department",
+                uploadDate: "2024-09-08",
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=300&h=200&fit=crop&crop=center",
+                status: "active"
+            },
+            {
+                id: 10,
+                name: "Car Keys",
+                description: "Toyota key fob with house keys and student ID lanyard",
+                foundLocation: "Library Main Entrance",
+                collectLocation: "Security Office",
+                uploadDate: "2024-08-15",
+                category: "accessories",
+                image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop&crop=center",
+                status: "archived"
+            },
+            {
+                id: 11,
+                name: "Reading Glasses",
+                description: "Black frame reading glasses in brown leather case",
+                foundLocation: "Library Reading Area",
+                collectLocation: "Library Information Desk",
+                uploadDate: "2024-08-12",
+                category: "accessories",
+                image: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=300&h=200&fit=crop&crop=center",
+                status: "archived"
+            },
+            {
+                id: 12,
+                name: "Notebook Set",
+                description: "Three spiral notebooks with chemistry and biology notes",
+                foundLocation: "Science Building Lab 3",
+                collectLocation: "Science Department",
+                uploadDate: "2024-09-07",
+                category: "documents",
+                image: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=300&h=200&fit=crop&crop=center",
+                status: "collected"
+            }
+        ];
+
+        // State management
+        let currentPage = 'home';
+        let isAdminLoggedIn = false;
+        let filteredItems = sampleItems;
+
+        // Navigation functionality
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navMenu = document.getElementById('navMenu');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    navigateToPage(page);
+                    
+                    // Update active nav link
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    // Close mobile menu
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        function navigateToPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById(`${pageName}-page`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                currentPage = pageName;
+
+                // Load page-specific content
+                switch(pageName) {
+                    case 'lost-items':
+                        loadLostItems();
+                        break;
+                    case 'history':
+                        loadHistoryItems();
+                        break;
+                    case 'archive':
+                        loadArchiveItems();
+                        break;
+                    case 'admin-login':
+                        break;
+                }
+            } else if (pageName === 'admin-dashboard' && isAdminLoggedIn) {
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                currentPage = 'admin-dashboard';
+            }
+        }
+
+        // Item loading functions
+        function createItemCard(item, isHistory = false, isArchive = false) {
+            const statusClass = isHistory ? 'collected' : (isArchive ? 'archived' : '');
+            const statusLabel = isHistory ? 'Collected' : (isArchive ? 'Archived Item' : '');
+            
+            return `
+                <div class="item-card ${statusClass}">
+                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                    <div class="item-content">
+                        <div class="item-title">${item.name} ${statusLabel ? `<span style="color: #26A69A; font-size: 0.8em;">(${statusLabel})</span>` : ''}</div>
+                        <div class="item-description">${item.description}</div>
+                        <div class="item-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt meta-icon"></i>
+                                <span>Found: ${item.foundLocation}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-building meta-icon"></i>
+                                <span>Collect: ${item.collectLocation}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-calendar meta-icon"></i>
+                                <span>${new Date(item.uploadDate).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadLostItems() {
+            const activeItems = sampleItems.filter(item => item.status === 'active');
+            const itemsGrid = document.getElementById('itemsGrid');
+            itemsGrid.innerHTML = activeItems.map(item => createItemCard(item)).join('');
+        }
+
+        function loadHistoryItems() {
+            const collectedItems = sampleItems.filter(item => item.status === 'collected');
+            const historyGrid = document.getElementById('historyGrid');
+            historyGrid.innerHTML = collectedItems.map(item => createItemCard(item, true)).join('');
+        }
+
+        function loadArchiveItems() {
+            const archivedItems = sampleItems.filter(item => item.status === 'archived');
+            const archiveGrid = document.getElementById('archiveGrid');
+            archiveGrid.innerHTML = archivedItems.map(item => createItemCard(item, false, true)).join('');
+        }
+
+        // Search and filter functionality
+        function initSearchAndFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const locationFilter = document.getElementById('locationFilter');
+            const sortFilter = document.getElementById('sortFilter');
+
+            [searchInput, categoryFilter, locationFilter, sortFilter].forEach(element => {
+                if (element) {
+                    element.addEventListener('input', filterItems);
+                }
+            });
+        }
+
+        function filterItems() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const category = document.getElementById('categoryFilter')?.value || '';
+            const location = document.getElementById('locationFilter')?.value || '';
+            const sort = document.getElementById('sortFilter')?.value || 'newest';
+
+            let filtered = sampleItems.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(searchTerm) || 
+                                    item.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || item.category === category;
+                const matchesLocation = !location || item.foundLocation.toLowerCase().includes(location);
+                const isActive = item.status === 'active';
+
+                return matchesSearch && matchesCategory && matchesLocation && isActive;
+            });
+
+            // Sort items
+            filtered.sort((a, b) => {
+                const dateA = new Date(a.uploadDate);
+                const dateB = new Date(b.uploadDate);
+                return sort === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+
+            const itemsGrid = document.getElementById('itemsGrid');
+            if (itemsGrid) {
+                itemsGrid.innerHTML = filtered.map(item => createItemCard(item)).join('');
+            }
+        }
+
+        // Admin functionality
+        function initAdminLogin() {
+            const loginForm = document.getElementById('loginForm');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+
+                    // Simple demo authentication
+                    if (username === 'admin' && password === 'admin123') {
+                        isAdminLoggedIn = true;
+                        navigateToPage('admin-dashboard');
+                        loadAdminDashboard();
+                        
+                        // Update nav to show admin is logged in
+                        updateNavForAdmin();
+                    } else {
+                        alert('Invalid credentials. Use admin/admin123 for demo.');
+                    }
+                });
+            }
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    isAdminLoggedIn = false;
+                    navigateToPage('home');
+                    updateNavForPublic();
+                });
+            }
+        }
+
+        function updateNavForAdmin() {
+            const adminLink = document.querySelector('[data-page="admin-login"]');
+            if (adminLink) {
+                adminLink.textContent = 'Dashboard';
+                adminLink.setAttribute('data-page', 'admin-dashboard');
+            }
+        }
+
+        function updateNavForPublic() {
+            const adminLink = document.querySelector('[data-page="admin-dashboard"]');
+            if (adminLink) {
+                adminLink.textContent = 'Admin';
+                adminLink.setAttribute('data-page', 'admin-login');
+            }
+        }
+
+        function loadAdminDashboard() {
+            const adminContentArea = document.getElementById('admin-content-area');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link[data-admin-page]');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-admin-page');
+                    
+                    // Update active sidebar link
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    loadAdminContent(page);
+                });
+            });
+
+            // Load default content
+            loadAdminContent('add');
+        }
+
+        function loadAdminContent(page) {
+            const contentArea = document.getElementById('admin-content-area');
+            
+            switch(page) {
+                case 'add':
+                    contentArea.innerHTML = `
+                        <div class="page-header">
+                            <h1 class="page-title">Add Lost Item</h1>
+                            <p>Report a new found item</p>
+                        </div>
+                        <div class="search-filters" style="max-width: 600px;">
+                            <form id="addItemForm">
+                                <div class="form-group">
+                                    <label class="form-label">Item Name</label>
+                                    <input type="text" class="form-input" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-input" rows="3" required></textarea>
+                                </div>
+                                <div class="filter-row" style="margin-bottom: 1.5rem;">
+                                    <div class="filter-group" style="flex: 1;">
+                                        <label class="filter-label">Found Location</label>
+                                        <select class="filter-select" style="width: 100%;" required>
+                                            <option value="">Select location</option>
+                                            <option value="library">Library</option>
+                                            <option value="cafeteria">Cafeteria</option>
+                                            <option value="classroom">Classroom</option>
+                                            <option value="lab">Computer Lab</option>
+                                            <option value="gym">Gymnasium</option>
+                                            <option value="parking">Parking Lot</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group" style="flex: 1;">
+                                        <label class="filter-label">Category</label>
+                                        <select class="filter-select" style="width: 100%;" required>
+                                            <option value="">Select category</option>
+                                            <option value="electronics">Electronics</option>
+                                            <option value="clothing">Clothing</option>
+                                            <option value="accessories">Accessories</option>
+                                            <option value="documents">Documents</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Collect Location</label>
+                                    <input type="text" class="form-input" placeholder="e.g., Security Office" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Item Photo</label>
+                                    <div style="border: 2px dashed #E5E7EB; border-radius: 12px; padding: 2rem; text-align: center; background: #F9FAFB;">
+                                        <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; color: #26A69A; margin-bottom: 1rem;"></i>
+                                        <p style="margin-bottom: 1rem; color: #6B7280;">Drag and drop an image or click to browse</p>
+                                        <input type="file" accept="image/*" style="display: none;" id="imageUpload">
+                                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('imageUpload').click();">
+                                            Choose File
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-plus"></i>
+                                    Add Item
+                                </button>
+                            </form>
+                        </div>
+                    `;
+                    break;
+
+                case 'manage':
+                    contentArea.innerHTML = `
+                        <div class="page-header">
+                            <h1 class="page-title">Manage Items</h1>
+                            <p>Edit or mark items as collected</p>
+                        </div>
+                        <div class="search-filters">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: #F9FAFB; border-bottom: 2px solid #E5E7EB;">
+                                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Item</th>
+                                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Location</th>
+                                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Date</th>
+                                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Status</th>
+                                        <th style="padding: 1rem; text-align: left; font-weight: 600;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${sampleItems.map(item => `
+                                        <tr style="border-bottom: 1px solid #E5E7EB;">
+                                            <td style="padding: 1rem;">
+                                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                                    <img src="${item.image}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                                    <div>
+                                                        <div style="font-weight: 500;">${item.name}</div>
+                                                        <div style="color: #6B7280; font-size: 0.9em;">${item.description.substring(0, 50)}...</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 1rem; color: #6B7280;">${item.foundLocation}</td>
+                                            <td style="padding: 1rem; color: #6B7280;">${new Date(item.uploadDate).toLocaleDateString()}</td>
+                                            <td style="padding: 1rem;">
+                                                <span style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; 
+                                                    ${item.status === 'active' ? 'background: #E3F2FD; color: #1E88E5;' : 
+                                                      item.status === 'collected' ? 'background: #E8F5E8; color: #26A69A;' : 
+                                                      'background: #FFF3E0; color: #FF9800;'}">
+                                                    ${item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                                                </span>
+                                            </td>
+                                            <td style="padding: 1rem;">
+                                                <div style="display: flex; gap: 0.5rem;">
+                                                    <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #E3F2FD; color: #1E88E5; border: none;">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
+                                                    ${item.status === 'active' ? `
+                                                        <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #E8F5E8; color: #26A69A; border: none;">
+                                                            <i class="fas fa-check"></i> Collected
+                                                        </button>
+                                                    ` : ''}
+                                                    <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: #FFEBEE; color: #F44336; border: none;">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    break;
+
+                case 'stats':
+                    contentArea.innerHTML = `
+                        <div class="page-header">
+                            <h1 class="page-title">Statistics</h1>
+                            <p>Lost and found analytics</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                            <div class="highlight-card">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #1E88E5; margin-bottom: 0.5rem;">${sampleItems.filter(i => i.status === 'active').length}</div>
+                                    <div style="color: #6B7280;">Active Items</div>
+                                </div>
+                            </div>
+                            <div class="highlight-card">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #26A69A; margin-bottom: 0.5rem;">${sampleItems.filter(i => i.status === 'collected').length}</div>
+                                    <div style="color: #6B7280;">Items Collected</div>
+                                </div>
+                            </div>
+                            <div class="highlight-card">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #FF9800; margin-bottom: 0.5rem;">${sampleItems.filter(i => i.status === 'archived').length}</div>
+                                    <div style="color: #6B7280;">Archived Items</div>
+                                </div>
+                            </div>
+                            <div class="highlight-card">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: #9C27B0; margin-bottom: 0.5rem;">${((sampleItems.filter(i => i.status === 'collected').length / sampleItems.length) * 100).toFixed(1)}%</div>
+                                    <div style="color: #6B7280;">Success Rate</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="search-filters">
+                            <h3 style="margin-bottom: 2rem; color: #2C3E50;">Monthly Lost Items</h3>
+                            <div style="height: 300px; background: #F9FAFB; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <div style="text-align: center; color: #6B7280;">
+                                    <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                    <p>Chart visualization would be implemented here<br>using Chart.js or similar library</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
+
+        // Chatbot functionality
+        function initChatbot() {
+            const chatbotBtn = document.getElementById('chatbotBtn');
+            chatbotBtn.addEventListener('click', () => {
+                alert('AI Assistant: Hello! I can help you find lost items. For example, you can ask me:\n\n• "Show me phones found in the library"\n• "What items were found this week?"\n• "Search for red backpack"\n\nThis is a demo - full AI integration would be implemented with the backend.');
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation();
+            initSearchAndFilters();
+            initAdminLogin();
+            initChatbot();
+            
+            // Load initial content
+            loadLostItems();
+        });
+    </script>
+</body>
+</html>
